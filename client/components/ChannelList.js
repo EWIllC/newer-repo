@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 // These values are all hardcoded...for now!
@@ -8,10 +9,12 @@ const GENERAL_CHANNEL = '/channels/2';
 const DOGS_CHANNEL = '/channels/3';
 const LUNCH_CHANNEL = '/channels/4';
 
-export default class ChannelList extends Component {
+class ChannelList extends Component {
 
   render () {
+    console.log(this.props.messages)
     return (
+      
       <ul>
         <li>
           <NavLink to={RANDOM_CHANNEL} activeClassName="active">
@@ -41,3 +44,11 @@ export default class ChannelList extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    messages: state.messages
+  }
+}
+
+export default connect(mapStateToProps)(ChannelList)

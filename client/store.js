@@ -1,7 +1,6 @@
 import Axios from 'axios';
 import { createStore, } from 'redux'
-import {  connect } from 'react-redux'
-import thunk from 'redux-thunk'
+import thunkMiddleware from 'redux-thunk'
 import {applyMiddleware} from 'redux'
 import MessagesList from './components/MessagesList';
 
@@ -12,14 +11,12 @@ const initialState = {
     messages: []
 }
 
-const fetchMessage = () => {
+export const fetchMessages = () => {
     return async (dispatch) => {
         const response = await Axios.get('/api/messages')
-        console.log(response)
         const messages = response.data;
-        console.log(`mesasges from store`, mesasges )
-        const action = gotMessagesFromServer(messages)
-        //dispatch(action)
+        
+        dispatch(gotMessagesFromServer(messages))
     }
 }
 
@@ -31,6 +28,7 @@ export const gotMessagesFromServer = (messages) => {
 }
 
 export const reducer = (state = initialState, action) => {
+    //console.log(action)
     switch(action.type) {
         case GOT_MESSAGES_FROM_SERVER: 
             return {...state, messages: action.messages}
@@ -39,17 +37,8 @@ export const reducer = (state = initialState, action) => {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-       messages: state.messages
-    }
-}
 
-const mapDispatchToProps = (dispatch) => {
-    return 
-       fetchInitialMessages: () => dispatch(fetchMessage())
-}
 
-  const ConnectCounter = connect(mapStateToProps,mapDispatchToProps)(MessagesList )
-const store = createStore(reducer,applyMiddleware());
+
+const store = createStore(reducer,applyMiddleware(thunkMiddleware));
 export  default store;

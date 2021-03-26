@@ -2,18 +2,22 @@ import React, { Component } from 'react';
 import Message from './Message';
 import NewMessageEntry from './NewMessageEntry';
 import axios from 'axios';
-
+import store from '../store'
 export default class MessagesList extends Component {
 
-  constructor () {
-    super();
-    this.state = { messages: [] };
+  constructor (props) {
+    super(props);
+    this.state =  {
+      messages: []
+    };
+    console.log(this.state)
   }
 
   async componentDidMount () {
     const response = await axios.get('/api/messages');
     const messages = response.data;
     this.setState({ messages });
+    
   }
 
   render () {
